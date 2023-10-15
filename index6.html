@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_2 task_6</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<style>
+		.container{
+			display: flex;
+			padding: 20px 10px;
+			gap: 15px;
+		}
+		.list__container{
+			min-width: 275px;
+			border: 1px solid #000;
+		}
+		.list__inner{
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+			padding: 10px;
+		}
+		.list__title{
+			font-size: 18px;
+			font-weight: 600;
+			text-align: center;
+			margin-bottom: 20px;
+			border: 1px solid #000;
+		}
+		.list__item{
+			display: flex;
+			justify-content: space-between;
+			gap:10px;
+		}
+		
+	</style>
+</head>
+
+<body>
+	<div id="task6">
+		<h2>Задача 6</h2>
+		<div style="max-width:500px; font-style: italic;">
+			На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують на виконання”, якщо повар береться робити —
+			замовлення переходить у список “Виконуються”, якщо замовлення виконано — переходить у список “Готові до виносу”. Якщо
+			натиснути на “Подано” - страва зникає з таблиці.<br>
+			
+			Підказка: тут треба зберігати 3 масиви страв ( waitingList, processingList, completedList)
+			
+			===================================================================== 
+		</div>
+
+		<label>
+			Нова замовлена страва:
+			<input type="text" v-model="orderedDish"><button @click="onAddDish">Додати</button>
+		</label>
+
+		<div class="container">
+			<div class="list__container">
+				<div class="list__title">Очікують на виконання</div>
+				<div class="list__inner">
+					<div class="list__item" v-for="(dish,index) in waitingList" :key="index">
+						<div>{{dish}}</div>
+						<button @click="onProcessDish(index)">Готувати</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="list__container">
+				<div class="list__title">Виконуються</div>
+				<div class="list__inner">
+					<div class="list__item" v-for="(dish,index) in processingList" :key="index">
+						<div>{{dish}}</div>
+						<button @click="onCompleteDish(index)">Приготовлено</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="list__container">
+				<div class="list__title">Готові до виносу</div>
+				<div class="list__inner">
+					<div class="list__item" v-for="(dish,index) in completedList" :key="index">
+						<div>{{dish}}</div>
+						<button @click="onServeDish(index)">Подано</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+	<script>
+		const { createApp } = Vue;
+		const app = createApp({
+			data() {
+				return {
+					waitingList: ['Борщ', 'Деруни з грибами','Деруни з м\'ясом', 'Шашлик зі свинини', 'Рулька з тушеною капустою', 'Медальйони з телятини', 'Короп на грилі', 'Салат Цезарь', 'Грибний крем-суп'],
+					processingList: [],
+					completedList: [],
+					orderedDish: null,
+				}
+			},
+			methods: {
+				onAddDish(){
+					if (this.orderedDish) {
+						this.waitingList.push(this.orderedDish);
+					}
+				},
+				onProcessDish(index){
+					this.processingList.push(this.waitingList[index]);
+					this.waitingList.splice(index,1);
+				},
+				onCompleteDish(index){
+					this.completedList.push(this.processingList[index]);
+					this.processingList.splice(index,1);
+				},
+				onServeDish(index){
+					this.completedList.splice(index,1);
+				}
+			}
+		});
+		app.mount('#task6');
+	</script>
+</body>
+
+</html>

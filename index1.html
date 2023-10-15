@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_2 task_1</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<style>
+		.message {
+			font-size: 18px;
+			font-weight: 600;
+			margin-top: 20px;
+		}
+		.error {
+			color: blue;
+		}
+		.succes {
+			color: red;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="task1">
+		<h2>Задача 1</h2>
+		<div style="max-width:500px; font-style: italic;">
+			Вводимо логін і пароль. Якщо логін вірний, відображаємо смайл. Якщо ні, то:<br>
+			1) якщо логін = Іван – колір повідомлення про помилку синій <br>
+			2) якщо хтось інший, то колір повідомлення червоний<br>
+			<pre>
+		users = [{login: 'John', password: '11111'}, {login: 'Jane', password: '22222'},	{login: 'Peter', password: '33333'},]
+			</pre>
+			=====================================================================
+		</div>
+		
+		<label>
+			Login:
+			<input type="text"
+					 v-model="userLogin"
+					 @input="testCyrrilic"
+			 		 @focus="onClearMessage">
+		</label>
+		<br>
+		<label>
+			Password:
+			<input type="password" v-model.trim="userPassword" @focus="onClearMessage">
+		</label>
+		<br>
+		<button @click="testUser">GO >>> </button>
+		<button @click="clearInput"> Очистити</button>
+		<br>
+		<img v-if=showSmile src="img/smile.png" width="75" style="margin:20px">
+		<div class="message" :class="{
+				'succes': isAuthCompleted,
+				'error': isAuthFailed || userLogin == 'Іван'
+			}">
+			{{message}}
+		</div>
+	</div>
+
+	<script>
+		const users = [
+			{
+				login: 'John',
+				password: '11111'
+			},
+			{
+				login: 'Jane',
+				password: '22222'
+			},
+			{
+				login: 'Peter',
+				password: '33333'
+			},
+			{
+				login: 'Lucie',
+				password: '44444'
+			},
+			{
+				login: 'Vova',
+				password: '55555'
+			},
+		]
+		const { createApp } = Vue;
+		const app = createApp({
+			data() {
+				return {
+					userLogin: null,
+					userPassword: null,
+					isAuth: null,
+					message: ''
+				}
+			},
+			computed: {
+				isCompleted() {
+					return this.userLogin && this.userPassword;
+				},
+				isAuthCompleted() {
+					if (this.isCompleted && this.isAuth) return true;
+				},
+				isAuthFailed() {
+					if (this.isCompleted && !this.isAuth) return true;
+				},
+				showSmile() {
+					if (this.isCompleted && this.isAuth) return true;
+				},
+			},
+			methods: {
+				testUser() {
+					if (this.isCompleted) {
+						let result = users.find((u) => (u.login === this.userLogin && u.password === this.userPassword));
+						console.log(result);
+						if (result) {
+							this.isAuth = true;
+							this.message = "Авторизація успішна"
+						} else {
+							this.isAuth = false;
+							this.message = "Логін або пароль невірний"
+						}
+					} else this.message = "Введіть логін та пароль";
+				},
+				testCyrrilic() {
+					if (this.userLogin == "Іван") {
+						this.isAuth = false;
+						this.message = "Логін повинен бути латинськими буквами";
+					}
+				},
+				onClearMessage(){
+					this.message = '';
+				},
+				clearInput() {
+					this.userLogin = '';
+					this.userPassword = '';
+					this.isAuth = null;
+					this.message = '';
+				}
+			}
+		});
+		app.mount('#task1');
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_2 task_4</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<style>
+		.card {
+			margin: 20px auto;
+			max-width: 70vw;
+			border: 2px dashed #000;
+			padding: 30px;
+		}
+		.title-container {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="task5">
+		<h2>Задача 5</h2>
+		<div style="max-width:500px; font-style: italic;">
+			Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково повинні співпадати)
+			===================================================================== 
+		</div>
+		
+		<template v-for="(language,i) in programmingLanguages" :key="i">
+			<div class="card">
+				<div class="title-container">
+					<img :src=language.img alt="logo" width="30">
+					<h2> {{ language.name }}</h2>
+				</div>
+				<p>{{ language.description }}</p>
+				<a :href="language.documentationLink"> {{ language.documentationLink }}</a>
+			</div>
+		</template>
+	</div>	
+
+	<script>
+		const { createApp } = Vue;
+		const app = createApp({
+			data() {
+				return {
+					programmingLanguages: [
+						{
+							name: "JavaScript",
+							description: "A high-level, dynamic, and interpreted scripting language used for building web applications.",
+							documentationLink: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+							img: 'img/js.svg',
+						},
+						{
+							name: "Python",
+							description: "An easy-to-read, versatile, and popular programming language known for its simplicity and readability.",
+							documentationLink: "https://docs.python.org/3/",
+							img: 'img/python.svg',
+						},
+						{
+							name: "Java",
+							description: "A widely-used, platform-independent, and object-oriented programming language for building enterprise-level applications.",
+							documentationLink: "https://docs.oracle.com/en/java/",
+							img: 'img/java.svg',
+						},
+						{
+							name: "C++",
+							description: "An extension of the C programming language known for its power and performance, often used in game development and systems programming.",
+							documentationLink: "https://en.cppreference.com/w/",
+							img: 'img/c.svg',
+						},
+						{
+							name: "Ruby",
+							description: "A dynamic, object-oriented programming language designed for simplicity and productivity.",
+							documentationLink: "https://www.ruby-lang.org/en/documentation/",
+							img: 'img/ruby.svg',
+						},
+						{
+							name: "Swift",
+							description: "Apple's programming language for developing iOS, macOS, watchOS, and tvOS applications, known for its performance and safety features.",
+							documentationLink: "https://developer.apple.com/documentation/swift",
+							img: 'img/swift.svg'
+						},
+					]
+				}
+			}
+		});
+		app.mount('#task5');
+	</script>
+</body>
+
+</html>

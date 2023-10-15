@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_2 task_3</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<style>
+		.card {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 10px;
+			max-width: 400px;
+			font-size: 20px;
+			border: 2px solid #000;
+			margin: 20px;
+			padding: 20px 0;
+		}
+		.card p {
+			margin: 0;
+		}
+		.message {
+			font-size: 18px;
+			font-weight: 600;
+		}
+		.succes {
+			border: 3px solid green;
+		}
+		.error {
+			border: 3px solid red;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="task3">
+		<h2>Задача 3</h2>
+		<div style="max-width:500px; font-style: italic;">
+			Елемент тренажера англійської. Виводимо зображення елемента і
+			слово. Користувач вводить відповідь. Якщо вірно – відтворюємо фразу «Добре. Молодець!» (і додаємо зелену рамку
+			до елемента), якщо ні - то відтворюємо фразу «Невірно,
+			спробуйте ще раз» (і додаємо червону рамку).
+			=====================================================================
+		</div>
+
+		<div class="card" :class="statusTranslate">
+			<img :src="cardToDisplay.img" width="250">
+			<p>
+				{{ cardToDisplay.englishName }}
+			</p>
+			<label>Ваш переклад:</label>
+			<input v-model="translation">
+			<button @click="onTestTranslation">Перевірити</button>
+			<button @click="onRandomizeCard">Наступне слово</button>
+		</div>
+		<div class="message">{{message}}</div>
+
+	</div>
+
+	<script>
+		const dictionary = [
+				{
+					englishName: 'kettle',
+					ukrainianName: 'чайник',
+					img: 'img/kettle.jpg'
+				},
+				{
+					englishName: 'doll',
+					ukrainianName: 'лялька',
+					img: 'img/doll.jpg'
+				},
+				{
+					englishName: 'plane',
+					ukrainianName: 'літак',
+					img: 'img/plane.jpg'
+				},
+				{
+					englishName: 'dog',
+					ukrainianName: 'пес',
+					img: 'img/dog.png'
+				},
+				{
+					englishName: 'tree',
+					ukrainianName: 'дерево',
+					img: 'img/tree.jpg'
+				},
+				{
+					englishName: 'spoon',
+					ukrainianName: 'ложка',
+					img: 'img/spoon.jpg'
+				},
+				{
+					englishName: 'towel',
+					ukrainianName: 'рушник',
+					img: 'img/towel.png'
+				},
+				{
+					englishName: 'bicycle',
+					ukrainianName: 'велосипед',
+					img: 'img/bicycle.jpg'
+				},
+			];
+		const { createApp } = Vue;
+		const app = createApp({
+			data() {
+				return {
+					cardToDisplay: dictionary[0],
+					translation: null,
+					message: '',
+					statusTranslate: '',
+				}
+			},
+			methods: {
+				onRandomizeCard() {
+					let randomIndex = Math.floor(Math.random() * dictionary.length);
+					// console.log(dictionary[randomIndex]);
+					this.message = '';
+					this.translation = null;
+					this.statusTranslate = null;
+					return this.cardToDisplay = dictionary[randomIndex];
+				},
+				onTestTranslation() {
+					if (this.translation == this.cardToDisplay.ukrainianName) {
+						this.message = 'Добре. Молодець!';
+						this.statusTranslate = 'succes';
+					} else {
+						this.message = 'Невірно, спробуйте ще раз';
+						this.statusTranslate = 'error';
+					}
+				}
+			}
+		});
+		app.mount('#task3');
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_2 task_2</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<style>
+		.question {
+			background: url(img/business-jet.jpg) no-repeat center;
+			max-width: 500px;
+			height: 300px;
+			text-align: center;
+			font-size: 24px;
+			color: beige;
+			padding: 20px 0;
+		}
+		button {
+			width: 50px;
+			height: 30px;
+			cursor: pointer;
+			margin: 0 10px;
+		}
+		.economOptions{
+			background: url(img/clouds.jpg) no-repeat center;
+			max-width: 500px;
+			height: 300px;
+			padding-top: 20px;
+
+		}
+	</style>
+</head>
+
+<body>
+	<div id="task2">
+		<h2>Задача 2</h2>
+		<div style="max-width:500px; font-style: italic;">
+			З випадаючого списку вибираємо клас квитка у літаку. Якщо<br>
+			1) бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то запропонувати закуску
+			(так/ні)), на
+			фоні зображення бізнес кают<br>
+			2) економ – виводимо елементи для вибору типу пива і чипсів, на фоні хмарки.
+			=====================================================================
+		</div>
+		<label>
+			Оберіть клас літака:
+			<select v-model=planeClass>
+				<option value="business">Бізнес-клас</option>
+				<option value="econom">Економ-клас</option>
+			</select>
+		</label>
+		<br>
+		<div v-if="showBusinessBonus">
+			Оберіть:
+			<select v-model=businessChoice>
+				<option value="cognac">Кон'як</option>
+				<option value="newspaper">Газета</option>
+			</select>
+		</div>
+		<div v-if="showFoodQuestion" class="question">
+			<p>Закуска потрібна?</p>
+			<button>Так</button>
+			<button>Ні</button>
+		</div>
+
+		<div v-if="showEconomOptions" class="economOptions">
+			Оберіть:
+			<form>
+				<input type="checkbox" name="lager" value="lager">
+				<label for="lager"> Пиво світле</label><br>
+				<input type="checkbox" name="dark beer" value="dark-beer">
+				<label for="dark beer"> Пиво темне</label><br>
+				<input type="checkbox" name="beacon chips" value="beacon-chips">
+				<label for="beacon chips">Чіпси зі смаком бекону</label><br>
+				<input type="checkbox" name="cheese chips" value="cheese-chips">
+				<label for="cheese chips">Чіпси зі смаком сиру</label><br>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		const { createApp } = Vue;
+		const app = createApp({
+			data() {
+				return {
+					planeClass: null,
+					businessChoice: null
+				}
+			},
+			computed: {
+				showBusinessBonus() {
+					if (this.planeClass == 'business') return true;
+					else return false;
+				},
+				showFoodQuestion() {
+					if (this.businessChoice == 'cognac') return true;
+					else return false;
+				},
+				showEconomOptions() {
+					if (this.planeClass == 'econom') return true;
+					else return false;
+				}
+			},
+		});
+		app.mount('#task2');
+	</script>
+</body>
+
+</html>
